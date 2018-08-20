@@ -1,0 +1,28 @@
+replicaCount: 2
+
+image:
+  nodeapp:
+    repository: ylonkar/nodeapp
+    tag: "latest"
+  pullPolicy: Always
+
+service:
+  name: nodeapp-lb
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  path: /
+  hosts:
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
