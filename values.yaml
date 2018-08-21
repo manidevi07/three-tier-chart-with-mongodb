@@ -7,19 +7,17 @@ image:
   pullPolicy: Always
 
 service:
-  name: nodeapp-lb
-  type: LoadBalancer
+  name: nodeapp-service
+  type: NodePort
+  protocol: TCP
   externalPort: 80
   internalPort: 80
 
 ingress:
-  enabled: false
-  annotations: {}
-  path: /
-  hosts:
-  tls: []
+  name: nodeapp-ingress
 
-resources: {}
+resources:
+  staticIp: nodeapp
 
 nodeSelector: {}
 
