@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "nodeapp.name" . }}
+  name: {{ template "reactapp.name" . }}
   labels:
-    app: {{ template "nodeapp.name" . }}
+    app: {{ template "reactapp.name" . }}
     chart: {{ template "nodeapp.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -16,24 +16,27 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "nodeapp.name" . }}
+      app: {{ template "reactapp.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "nodeapp.name" . }}
+        app: {{ template "reactapp.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.nodeapp.repository }}:{{ .Values.image.nodeapp.tag }}
+          image: {{ .Values.image.reactapp.repository }}:{{ .Values.image.reactapp.tag }}
+          env:
+          - name: NODE_APP_URL
+            value: {{ printf "http://%s" .Values.service.nodeapp.name }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.nodeapp.internalPort }}
+            - containerPort: {{ .Values.service.reactapp.internalPort }}
           livenessProbe:
             httpGet:
               path: /
-              port: {{ .Values.service.nodeapp.internalPort }}
+              port: {{ .Values.service.reactapp.internalPort }}
             initialDelaySeconds: 15
             periodSeconds: 20  
           resources:

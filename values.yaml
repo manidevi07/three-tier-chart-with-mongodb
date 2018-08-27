@@ -4,20 +4,31 @@ image:
   nodeapp:
     repository: ylonkar/nodeapp
     tag: "latest"
+  reactapp:
+    repository: ylonkar/reactapp
+    tag: "latest"
   pullPolicy: Always
 
 service:
-  name: nodeapp-service
-  type: NodePort
-  protocol: TCP
-  externalPort: 80
-  internalPort: 80
+  reactapp:
+    name: reactapp-service
+    type: NodePort
+    protocol: TCP
+    externalPort: 80
+    internalPort: 80
+  nodeapp:
+    name: nodeapp-service
+    type: NodePort
+    protocol: TCP
+    externalPort: 80
+    internalPort: 80
 
 ingress:
-  name: nodeapp-ingress
+  reactapp:
+    name: react-ingress
 
 resources:
-  staticIp: nodeapp
+  staticIp: reactapp
 
 nodeSelector: {}
 

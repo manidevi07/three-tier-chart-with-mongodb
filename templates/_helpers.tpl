@@ -3,7 +3,10 @@
 Expand the name of the chart.
 */}}
 {{- define "nodeapp.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- default "nodeapp" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- define "reactapp.name" -}}
+{{- default "reactapp" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

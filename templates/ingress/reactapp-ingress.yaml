@@ -2,10 +2,10 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Values.ingress.name }}
+  name: {{ .Values.ingress.reactapp.name }}
   annotations:
     kubernetes.io/ingress.global-static-ip-name: {{ .Values.resources.staticIp }}
 spec:
   backend:
-    serviceName: {{ .Values.service.name }}
-    servicePort: {{ .Values.service.externalPort }}
+    serviceName: {{ .Values.service.reactapp.name }}
+    servicePort: {{ .Values.service.reactapp.externalPort }}

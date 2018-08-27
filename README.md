@@ -1,5 +1,7 @@
 # nodeappchart
-Helm chart for [nodeapp](https://github.com/yogeshlonkar/nodeapp)
+Helm chart for 
+- Back-end: [nodeapp](https://github.com/yogeshlonkar/nodeapp)
+- Front-end: [reactapp](https://github.com/yogeshlonkar/reactapp)
 
 Execute below to install package
 ```shell
