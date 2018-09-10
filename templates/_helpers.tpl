@@ -33,3 +33,15 @@ Create chart name and version as used by the chart label.
 {{- define "nodeapp.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/* Create mongodb database url for.*/}}
+{{- define "monogo.dburl" -}}
+{{/* sprig needs to conver .Values.database.mongo.replicas to int */}}
+{{- $replicas := (atoi (printf "%d" (int64 .Values.database.mongo.replicas))) -}}
+{{- range $i, $e := until $replicas -}}
+{{- printf "mongo-%d.mongo" $i -}}
+{{- if lt (add $i 1) $replicas -}}
+,
+{{- end -}}
+{{- end -}}
+{{- end -}}

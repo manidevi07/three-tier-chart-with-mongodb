@@ -13,7 +13,7 @@ spec:
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.apps.reactapp.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "reactapp.name" . }}
@@ -24,13 +24,24 @@ spec:
         app: {{ template "reactapp.name" . }}
         release: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ .Values.serviceAccount }}
+      initContainers:
+        - name: pod-dependency
+          image: ylonkar/pod-dependency-init-container:1.0
+          env:
+          - name: POD_LABELS
+            value: "app={{ template "nodeapp.name" . }}"
+          - name: MAX_RETRY
+            value: "12"
+          - name: RETRY_TIME_OUT
+            value: "10000"
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.reactapp.repository }}:{{ .Values.image.reactapp.tag }}
+          image: {{ .Values.apps.reactapp.repository }}:{{ .Values.apps.reactapp.tag }}
           env:
           - name: NODE_APP_URL
             value: {{ printf "http://%s" .Values.service.nodeapp.name }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.apps.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.reactapp.internalPort }}
           livenessProbe:

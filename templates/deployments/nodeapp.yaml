@@ -13,7 +13,7 @@ spec:
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.apps.nodeapp.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "nodeapp.name" . }}
@@ -24,10 +24,30 @@ spec:
         app: {{ template "nodeapp.name" . }}
         release: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ .Values.serviceAccount }}
+      initContainers:
+        - name: pod-dependency
+          image: ylonkar/pod-dependency-init-container:1.0
+          env:
+          - name: POD_LABELS
+            value: role=mongo
+          - name: MAX_RETRY
+            value: "10"
+          - name: RETRY_TIME_OUT
+            value: "5000"
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.nodeapp.repository }}:{{ .Values.image.nodeapp.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.apps.nodeapp.repository }}:{{ .Values.apps.nodeapp.tag }}
+          env:
+          - name: DB_URL
+            value: {{ template "monogo.dburl" . }}
+          - name: DB_PORT
+            value: !!str {{ .Values.database.mongo.port }}
+          - name: DB_NAME
+            value: nodeapp
+          - name: DB_REPLSET
+            value: {{ .Values.database.mongo.replicaSet }}
+          imagePullPolicy: {{ .Values.apps.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.nodeapp.internalPort }}
           livenessProbe:

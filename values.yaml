@@ -1,13 +1,26 @@
-replicaCount: 2
+# for discovering services and pods
+serviceAccount: discovery-sa
+namespace: default
 
-image:
+apps:
   nodeapp:
     repository: ylonkar/nodeapp
-    tag: "latest"
+    tag: "2.0.0"
+    replicaCount: 2
   reactapp:
     repository: ylonkar/reactapp
-    tag: "latest"
+    tag: "2.0.0"
+    replicaCount: 2
   pullPolicy: Always
+
+database:
+  mongo:
+    storageClassName: mongo-storage
+    storageName: mongo-persistent-storage
+    serviceName: mongo
+    replicaSet: rs0
+    replicas: 2
+    port: 27017
 
 service:
   reactapp:
@@ -30,8 +43,4 @@ ingress:
 resources:
   staticIp: reactapp
 
-nodeSelector: {}
-
 tolerations: []
-
-affinity: {}

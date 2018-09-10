@@ -22,3 +22,5 @@ thumbs.db
 .idea/
 *.tmproj
 .vscode/
+.env/
+*.tgz
