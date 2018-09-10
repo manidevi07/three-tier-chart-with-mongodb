@@ -1,4 +1,4 @@
-# nodeappchart
+# three-tier-chart-with-mongodb
 This chart deploys a three tier application. [reactapp](https://github.com/yogeshlonkar/reactapp) is used as front-end, [nodeapp](https://github.com/yogeshlonkar/nodeapp) as back-end along with mongodb `StatefulSet`. This chart also exposes Ingress service for `nodeapp`. The chart manages depdendency between different pods using [pod-dependency-init-container](https://github.com/yogeshlonkar/pod-dependency-init-container).
 
 Prerequisites
